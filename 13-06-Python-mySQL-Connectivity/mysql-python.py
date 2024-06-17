@@ -1,6 +1,6 @@
 import mysql.connector
 
-connection = mysql.connector.connect(host='localhost',database='world',user='root',password='Tejeswar2006')
+connection = mysql.connector.connect(host='localhost',database='world',user='root',password='Password')
 if connection.is_connected():
     print("hey, you are connected")
     c = connection.cursor()
