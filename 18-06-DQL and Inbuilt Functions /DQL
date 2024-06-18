@@ -1,0 +1,136 @@
+-- Create the departments table
+CREATE TABLE departments (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(50) NOT NULL
+);
+
+-- Insert sample data into the departments table
+INSERT INTO departments (department_name) VALUES
+('Sales'),
+('Marketing'),
+('HR'),
+('Finance'),
+('IT');
+
+-- Create the employees table
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    department INT NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    hire_date DATE NOT NULL,
+    FOREIGN KEY (department) REFERENCES departments(department_id)
+);
+
+-- Insert sample data into the employees table
+INSERT INTO employees (name, department, salary, hire_date) VALUES
+('John Doe', 1, 55000, '2019-03-15'),
+('Jane Smith', 2, 62000, '2020-07-23'),
+('Mike Johnson', 3, 48000, '2018-11-01'),
+('Emily Davis', 1, 75000, '2021-01-12'),
+('William Brown', 4, 88000, '2022-04-19'),
+('Linda Wilson', 5, 99000, '2017-08-30'),
+('Robert Miller', 2, 54000, '2020-09-10'),
+('Mary Moore', 3, 63000, '2019-02-27'),
+('James Taylor', 4, 72000, '2016-06-14'),
+('Patricia Anderson', 5, 110000, '2021-12-01'),
+('Barbara Thomas', 1, 67000, '2020-03-11'),
+('Richard Jackson', 2, 59000, '2019-05-16');
+
+-- Basic SELECT Statement
+SELECT * FROM employees;
+
+-- SELECT Specific Columns
+SELECT name, salary FROM employees;
+
+-- Using WHERE Clause
+SELECT name, salary
+FROM employees
+WHERE department = 1 AND salary > 50000;
+
+-- ORDER BY Clause
+SELECT name, salary
+FROM employees
+WHERE department = 1 AND salary > 50000
+ORDER BY salary DESC;
+
+-- GROUP BY and Aggregate Functions
+SELECT department, AVG(salary) AS average_salary
+FROM employees
+GROUP BY department;
+
+-- HAVING Clause
+SELECT department, AVG(salary) AS average_salary
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > 60000;
+
+-- JOIN Operations
+SELECT e.name, d.department_name
+FROM employees e
+INNER JOIN departments d ON e.department = d.department_id;
+
+-- Comprehensive Query Combining Multiple Clauses
+SELECT name, salary, hire_date
+FROM employees
+WHERE department = 2 AND salary > 60000 AND hire_date > '2020-01-01'
+ORDER BY hire_date;
+
+-- Additional Queries for Further Illustration
+-- Fetch all employees who were hired in the year 2020
+SELECT name, hire_date
+FROM employees
+WHERE YEAR(hire_date) = 2020;
+
+-- Fetch the total number of employees in each department
+SELECT d.department_name, COUNT(e.id) AS total_employees
+FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department
+GROUP BY d.department_name;
+
+-- Fetch the highest salary in each department
+SELECT d.department_name, MAX(e.salary) AS highest_salary
+FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department
+GROUP BY d.department_name;
+
+-- Fetch the employees whose names start with 'J'
+SELECT name, salary
+FROM employees
+WHERE name LIKE 'J%';
+
+-- Fetch the average salary of employees who joined after 2019
+SELECT AVG(salary) AS average_salary
+FROM employees
+WHERE hire_date > '2019-01-01';
+
+-- Fetch the names of employees along with their department names, sorted by department
+SELECT e.name, d.department_name
+FROM employees e
+INNER JOIN departments d ON e.department = d.department_id
+ORDER BY d.department_name;
+
+-- Fetch employees who earn more than the average salary of their department
+SELECT e.name, e.salary, d.department_name
+FROM employees e
+INNER JOIN departments d ON e.department = d.department_id
+WHERE e.salary > (SELECT AVG(salary) FROM employees WHERE department = e.department);
+
+-- Fetch departments with more than 3 employees
+SELECT d.department_name, COUNT(e.id) AS total_employees
+FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department
+GROUP BY d.department_name
+HAVING COUNT(e.id) > 3;
+
+-- Fetch the name and hire date of the most recently hired employee
+SELECT name, hire_date
+FROM employees
+ORDER BY hire_date DESC
+LIMIT 1;
+
+-- Fetch the total salary expenditure for each department
+SELECT d.department_name, SUM(e.salary) AS total_salary
+FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department
+GROUP BY d.department_name;
