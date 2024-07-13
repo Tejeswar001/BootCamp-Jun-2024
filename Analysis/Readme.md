@@ -1,5 +1,7 @@
 # Customer Churn Analysis
 
+
+
 ## Overview
 
 Customer churn refers to the phenomenon of customers discontinuing their subscriptions or relationships with a company. This analysis aims to understand the factors influencing customer churn in a telecommunications company. Specifically, we explore how various factors such as payment method, contract type, and tenure affect the likelihood of customers churning.
